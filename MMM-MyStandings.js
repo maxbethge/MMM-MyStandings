@@ -314,9 +314,9 @@ Module.register("MMM-MyStandings",{
 	socketNotificationReceived: function(notification, payload) {
 		//Log.log("[MMM-MyStandings] ms socketNotificationReceived: " + notification + ', instanceId: ' + payload.instanceId  + ', identifier: ' + this.identifier);
 		if (notification.startsWith("STANDINGS_RESULT") && payload.instanceId == this.identifier) {
-			Log.log("[MMM-MyStandings] ms socketNotificationReceived: " + notification + ', instanceId: ' + this.identifier);
+			Log.log("[MMM-MyStandings] ms socketNotificationReceived: " + notification + ', instanceId: ' + this.identifier + ', data: ' + payload.data);
 			var league = notification.split(":")[1];
-			this.standingsInfo.push(this.cleanupData(payload.result.children, league));
+			this.standingsInfo.push(this.cleanupData(payload.data.children, league));
 			this.standingsSportInfo.push(league);
 		}
 	},

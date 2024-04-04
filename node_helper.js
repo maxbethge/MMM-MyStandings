@@ -20,7 +20,7 @@ module.exports = NodeHelper.create({
 				var result = JSON.parse(body);
 				var newNotification = "STANDINGS_RESULT:" + notification.split(":")[1];
 				Log.log("[MMM-MyStandings] getData url request succeeded, sending -> " + newNotification + ', instanceId: ' + payload.instanceId);
-				self.sendSocketNotification(newNotification, {instanceId: payload.instanceId, result: result});
+				self.sendSocketNotification(newNotification, {instanceId: payload.instanceId, data: result});
 			} else {
 				Log.log("[MMM-MyStandings] : Could not load data -> " + error);
 			}
