@@ -265,11 +265,13 @@ Module.register("MMM-MyStandings",{
 			this.standingsInfo = [];
 			this.standingsSportInfo = [];
 			this.isLoaded = false;
+			console.log("MMM-MyStandings : clear all");
 		}
 
 		var sport;
 
 		for (var i = 0; i < this.config.sports.length; i++) {
+			console.log("MMM-MyStandings : " + this.config.sports[i].league);
 			switch (this.config.sports[i].league) {
 				case "MLB":
 					sport = "baseball/mlb/standings?level=3&sort=gamesbehind:asc,winpercent:desc";
@@ -312,11 +314,13 @@ Module.register("MMM-MyStandings",{
 
 	// This function helps rotate through different configured sports and rotate through divisions if that is configured
 	rotateStandings: function() {
+		console.log("MMM-MyStandings : rotateStandings -> " + this.standingsInfo);
 		// If we do not have any data, do not try to load the UI
 		if (this.standingsInfo === undefined || this.standingsInfo === null || this.standingsInfo.length === 0) {
 			return;
 		}
 
+		console.log("MMM-MyStandings : rotateStandings -> " + this.ctRotate );
 		// If we reached the end of the array, start over at 0
 		if (this.ctRotate >= this.standingsInfo.length) {
 			this.ctRotate = 0;
@@ -369,6 +373,8 @@ Module.register("MMM-MyStandings",{
 				this.ctRotate = this.ctRotate + 1;
 			}
 		} else {
+			console.log("MMM-MyStandings : isLoaded -> " + this.isLoaded );
+			console.log("MMM-MyStandings : standingsInfo.length -> " + this.standingsInfo.length );
 			// If we only have 1 sport, load it once and then do not try re loading again.
 			if (this.isLoaded === true && this.standingsInfo.length === 1) {
 				return;
@@ -387,6 +393,7 @@ Module.register("MMM-MyStandings",{
 		var imageType = ".svg";
 		var isSoccer = this.isSoccerLeague(sport);
 
+		console.log("MMM-MyStandings : cleanupData -> " + sport );
 		if (sport === 'NCAAF' || sport === 'NCAAM') {
 			imageType = ".png";
 		}
