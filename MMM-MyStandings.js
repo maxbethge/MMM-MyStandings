@@ -300,16 +300,16 @@ Module.register("MMM-MyStandings",{
 					break;
 			}
 			var notification = "STANDINGS_RESULT-" + this.config.sports[i].league;
-			Log.log("[MMM-MyStandings] : getData(clearAll) sending -> " + notification + ', instanceId: ' + this.instanceId + ', identifier: ' + this.identifier);
+			Log.log("[MMM-MyStandings] : getData(clearAll) sending -> " + notification + ', instanceId: ' + this.identifier);
 			this.sendSocketNotification(notification, {instanceId: this.identifier, url: this.config.url + sport} );
 			//this.sendSocketNotification("STANDINGS_RESULT-" + this.config.sports[i].league, this.config.url + sport);
 		}
 	},
 
 	socketNotificationReceived: function(notification, payload) {
-		Log.log("[MMM-MyStandings] ms socketNotificationReceived: " + notification + ', instanceId: ' + payload.instanceId  + ', identifier: ' + this.identifier);
+		//Log.log("[MMM-MyStandings] ms socketNotificationReceived: " + notification + ', instanceId: ' + payload.instanceId  + ', identifier: ' + this.identifier);
 		if (notification.startsWith("STANDINGS_RESULT") && payload.instanceId == this.identifier) {
-			Log.log("[MMM-MyStandings] socketNotificationReceived: " + notification);
+			Log.log("[MMM-MyStandings] ms socketNotificationReceived: " + notification + ', instanceId: ' + this.identifier);
 			var league = notification.split("-")[1];
 			this.standingsInfo.push(this.cleanupData(payload.result.children, league));
 			this.standingsSportInfo.push(league);
@@ -319,7 +319,7 @@ Module.register("MMM-MyStandings",{
 	// This function helps rotate through different configured sports and rotate through divisions if that is configured
 	rotateStandings: function() {
 		// If we do not have any data, do not try to load the UI
-		Log.log("[MMM-MyStandings] standingsInfo: " + this.standingsInfo + " -> " + this.standingsInfo.length);
+		Log.log("[MMM-MyStandings] standingsInfo.length: " + this.standingsInfo.length);		
 		if (this.standingsInfo === undefined || this.standingsInfo === null || this.standingsInfo.length === 0) {
 			return;
 		}
@@ -385,6 +385,7 @@ Module.register("MMM-MyStandings",{
 				return;
 			}
 
+			Log.log("[MMM-MyStandings] updating Dom");
 			this.updateDom(this.config.fadeSpeed);
 			this.isLoaded = true;
 			this.ctRotate = this.ctRotate + 1;

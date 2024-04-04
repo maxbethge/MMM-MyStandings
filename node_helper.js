@@ -14,11 +14,11 @@ module.exports = NodeHelper.create({
 
 	getData: function (notification, payload) {
 		var self = this;
-		Log.log('[MMM-MyStandings] getData -->  ' + notification + ', instanceId: ' + payload.instanceId + ', this.instanceId: ' + this.instanceId + ', identifier: ' + payload.identifier + ', this.identifier: ' + this.identifier);
+		Log.log('[MMM-MyStandings] getData -->  ' + notification + ', instanceId: ' + payload.instanceId);
 		request({ url: payload.url, method: 'GET' }, function (error, response, body) {
 			if (!error && response.statusCode == 200) {
 				var result = JSON.parse(body);
-				Log.log("[MMM-MyStandings] : request succeeded, sending -> " + notification + ', instanceId: ' + payload.instanceId + ', identifier: ' + payload.identifier);
+				Log.log("[MMM-MyStandings] : request succeeded, sending -> " + notification + ', instanceId: ' + payload.instanceId);
 				self.sendSocketNotification(notification, {instanceId: payload.instanceId, result: result});
 			} else {
 				Log.log("[MMM-MyStandings] : Could not load data -> " + error);
@@ -28,7 +28,7 @@ module.exports = NodeHelper.create({
 
 	//Subclass socketNotificationReceived received.
 	socketNotificationReceived: function(notification, payload) {
-		Log.log('[MMM-MyStandings] nh socketNotificationReceived: ' + notification + ', instanceId: ' + payload.instanceId + ', this.instanceId: ' + this.instanceId + ', identifier: ' + payload.identifier + ', this.identifier: ' + this.identifier);
+		Log.log('[MMM-MyStandings] nh socketNotificationReceived: ' + notification + ', instanceId: ' + payload.instanceId);
 		this.getData(notification, {instanceId: payload.instanceId, url: payload.url});		
 	}
 });
