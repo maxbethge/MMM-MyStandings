@@ -4,7 +4,7 @@
   "description": "MagicMirror² module to get ESPN standings for the major US sports",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/vincep5/MMM-MyStandings.git"
+    "url": "git+https://github.com/maxbethge/MMM-MyStandings.git"
   },
   "keywords": [
     "MagicMirror",
@@ -13,8 +13,8 @@
     "Sport",
     "Standings"
   ],
-  "author": "",
-  "license": "",
+  "author": "vincep5,maxbethge",
+  "license": "MIT",
   "dependencies": {
     "request" : "^2.88.2"
   }

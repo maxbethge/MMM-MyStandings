@@ -13,7 +13,7 @@ Uses the ESPN API for sports standings
 ## Installing the module
 Go to your MagicMirror modules directory by entering `cd MagicMirror/modules`
 
-run `git clone https://github.com/vincep5/MMM-MyStandings`
+run `git clone https://github.com/maxbethge/MMM-MyStandings`
 
 run `cd MMM-MyStandings` to get into the newly created folder
 

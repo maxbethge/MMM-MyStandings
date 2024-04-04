@@ -31,7 +31,8 @@ module.exports = NodeHelper.create({
 	socketNotificationReceived: function(notification, payload) {
 		if (notification.startsWith("MMM-MYSTANDINGS-UPDATE")){
 			Log.log('[MMM-MyStandings] nh socketNotificationReceived: ' + notification + ', instanceId: ' + payload.instanceId);
-			this.getData(notification, {instanceId: payload.instanceId, url: payload.url});		
+			this.getData(notification, {instanceId: payload.instanceId, url: payload.url});
+			Log.Log()	
 		}
 	}
 });
