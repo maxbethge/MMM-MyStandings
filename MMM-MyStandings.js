@@ -248,7 +248,7 @@ Module.register("MMM-MyStandings",{
 	},
 
 	scheduleUpdate: function(delay) {
-		Log.log('[MMM-MyStandings] scheduleUpdate');
+		Log.log('[MMM-MyStandings] scheduleUpdate - delay:' + delay);
 		var nextLoad = this.config.updateInterval;
 		if (typeof delay !== "undefined" && delay >= 0) {
 			nextLoad = delay;
@@ -375,8 +375,8 @@ Module.register("MMM-MyStandings",{
 				this.ctRotate = this.ctRotate + 1;
 			}
 		} else {
-			Log.log("MMM-MyStandings : isLoaded -> " + this.isLoaded );
-			Log.log("MMM-MyStandings : standingsInfo.length -> " + this.standingsInfo.length );
+			Log.log("[MMM-MyStandings] isLoaded -> " + this.isLoaded );
+			Log.log("[MMM-MyStandings] standingsInfo.length -> " + this.standingsInfo.length );
 			// If we only have 1 sport, load it once and then do not try re loading again.
 		//	if (this.isLoaded === true && this.standingsInfo.length === 1) {
 		//		return;
@@ -395,7 +395,7 @@ Module.register("MMM-MyStandings",{
 		var imageType = ".svg";
 		var isSoccer = this.isSoccerLeague(sport);
 
-		Log.log("MMM-MyStandings : cleanupData -> " + sport );
+		Log.log("[MMM-MyStandings] cleanupData -> " + sport );
 		if (sport === 'NCAAF' || sport === 'NCAAM') {
 			imageType = ".png";
 		}
