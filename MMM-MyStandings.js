@@ -322,13 +322,13 @@ Module.register("MMM-MyStandings",{
 	// This function helps rotate through different configured sports and rotate through divisions if that is configured
 	rotateStandings: function() {
 		// If we do not have any data, do not try to load the UI
-		Log.log("[MMM-MyStandings] standingsInfo.length: " + this.standingsInfo.length);		
+		Log.log("[MMM-MyStandings] standingsInfo.length: " + this.standingsInfo.length + ', identifier: ' + this.identifier);		
 		if (this.standingsInfo === undefined || this.standingsInfo === null || this.standingsInfo.length === 0) {
 			return;
 		}
 
 		// If we reached the end of the array, start over at 0
-		Log.log("[MMM-MyStandings] ctRotate: " + this.ctRotate);
+		Log.log("[MMM-MyStandings] ctRotate: " + this.ctRotate + ', identifier: ' + this.identifier);
 		if (this.ctRotate >= this.standingsInfo.length) {
 			this.ctRotate = 0;
 		}
@@ -339,7 +339,7 @@ Module.register("MMM-MyStandings",{
 		if (this.config.showByDivision) {
 			// If we only have 1 sport and 1 division, load it once and then do not try re loading again.
 			if (this.isLoaded === true && this.standingsInfo.length === 1 && this.ctDivision === 0 && this.hasMoreDivisions === false) {
-				Log.log("[MMM-MyStandings] showByDivision - not rotating");
+				Log.log("[MMM-MyStandings] showByDivision - not rotating, identifier: " + this.identifier);
 				return;
 			}
 
@@ -371,7 +371,7 @@ Module.register("MMM-MyStandings",{
 				}
 			}
 
-			Log.log("[MMM-MyStandings] updating Dom");
+			Log.log("[MMM-MyStandings] updating Dom, identifier: " + this.identifier);
 			this.updateDom(this.config.fadeSpeed);
 			this.isLoaded = true;
 			this.ctDivision = this.ctDivision + 1;
@@ -402,7 +402,7 @@ Module.register("MMM-MyStandings",{
 		var imageType = ".svg";
 		var isSoccer = this.isSoccerLeague(sport);
 
-		Log.log("[MMM-MyStandings] cleanupData: " + sport);
+		Log.log("[MMM-MyStandings] cleanupData: " + sport + ', identifier: ' + this.identifier);
 		if (sport === 'NCAAF' || sport === 'NCAAM') {
 			imageType = ".png";
 		}
