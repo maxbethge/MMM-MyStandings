@@ -196,7 +196,7 @@ Module.register("MMM-MyStandings",{
 	// Start the module.
 	start: function () {
 		// Set some default for groups if not found in user config
-		Log.log("[MMM-MyStandings] module start");
+		Log.log("[MMM-MyStandings] module start - " + this.identifier);
 		for (var league in this.config.sports) {
 			if (this.config.sports[league].groups === undefined) {
 				for (var leagueDefault in this.defaults.sports) {
@@ -209,9 +209,11 @@ Module.register("MMM-MyStandings",{
 		}
 
 		// Get initial API data
+		Log.log("[MMM-MyStandings] initial getData(false) call - " + this.identifier);
 		this.getData(false);
 
 		// Schedule the API data update.
+		Log.log("[MMM-MyStandings] scheduleUpdate() call - " + this.identifier);
 		this.scheduleUpdate();
 
 		// Schedule the first UI load
@@ -225,6 +227,7 @@ Module.register("MMM-MyStandings",{
 		setInterval(function() {
 			self.rotateStandings();
 		}, this.config.rotateInterval);
+		Log.log("[MMM-MyStandings] module start completed - " + this.identifier);
 	},	
 
 	// Define required styles.
@@ -249,6 +252,7 @@ Module.register("MMM-MyStandings",{
 	},
 
 	scheduleUpdate: function(delay) {
+		Log.log("[MMM-MyStandings] scheduleUpdate(delay) --> delay: " + delay + ', identifier: ' + this.identifier);
 		var nextLoad = this.config.updateInterval;
 		if (typeof delay !== "undefined" && delay >= 0) {
 			nextLoad = delay;
@@ -262,7 +266,7 @@ Module.register("MMM-MyStandings",{
 
 	getData: function (clearAll) {
 		// When we want to refresh data from the API call
-		Log.log("[MMM-MyStandings] getData(clearAll): " + clearAll);
+		Log.log("[MMM-MyStandings] getData(clearAll): " + clearAll + ', identifier: ' + this.identifier);
 		if (clearAll === true) {
 			this.standingsInfo = [];
 			this.standingsSportInfo = [];
@@ -299,7 +303,8 @@ Module.register("MMM-MyStandings",{
 					sport = this.SOCCER_LEAGUE_PATHS[this.config.sports[i].league] + "/standings?sort=rank:asc";
 					break;
 			}
-			var notification = "STANDINGS_RESULT-" + this.config.sports[i].league;
+			var notification = "MMM-MYSTANDINGS-UPDATE:" + this.config.sports[i].league;
+			//var notification = "MMM-MYSTANDINGS-UPDATE-STANDINGS";
 			Log.log("[MMM-MyStandings] : getData(clearAll) sending -> " + notification + ', instanceId: ' + this.identifier);
 			this.sendSocketNotification(notification, {instanceId: this.identifier, url: this.config.url + sport} );
 			//this.sendSocketNotification("STANDINGS_RESULT-" + this.config.sports[i].league, this.config.url + sport);
@@ -310,7 +315,7 @@ Module.register("MMM-MyStandings",{
 		//Log.log("[MMM-MyStandings] ms socketNotificationReceived: " + notification + ', instanceId: ' + payload.instanceId  + ', identifier: ' + this.identifier);
 		if (notification.startsWith("STANDINGS_RESULT") && payload.instanceId == this.identifier) {
 			Log.log("[MMM-MyStandings] ms socketNotificationReceived: " + notification + ', instanceId: ' + this.identifier);
-			var league = notification.split("-")[1];
+			var league = notification.split(":")[1];
 			this.standingsInfo.push(this.cleanupData(payload.result.children, league));
 			this.standingsSportInfo.push(league);
 		}
