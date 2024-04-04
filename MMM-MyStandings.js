@@ -384,7 +384,7 @@ Module.register("MMM-MyStandings",{
 		} else {
 			// If we only have 1 sport, load it once and then do not try re loading again.
 			if (this.isLoaded === true && this.standingsInfo.length === 1) {
-				Log.log("[MMM-MyStandings] not rotating");
+				Log.log("[MMM-MyStandings] not rotating, identifier: " + this.identifier);
 				return;
 			}
 
