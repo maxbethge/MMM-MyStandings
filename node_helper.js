@@ -4,11 +4,12 @@
  */
 var NodeHelper = require('node_helper');
 var request = require('request');
+const Log = require('../../js/logger.js')
 
 module.exports = NodeHelper.create({
 
 	start: function () {
-		console.log('MMM-MyStandings helper started ...');
+		Log.log('[MMM-MyStandings] helper started ...');
 	},
 
 	getData: function (notification, url) {
@@ -19,7 +20,7 @@ module.exports = NodeHelper.create({
 				var result = JSON.parse(body);
 				self.sendSocketNotification(notification, result);
 			} else {
-				console.log("MMM-MyStandings : Could not load data.");
+				Log.log("[MMM-MyStandings] : Could not load data.");
 			}
 		});
 	},
