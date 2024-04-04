@@ -299,8 +299,9 @@ Module.register("MMM-MyStandings",{
 					sport = this.SOCCER_LEAGUE_PATHS[this.config.sports[i].league] + "/standings?sort=rank:asc";
 					break;
 			}
-			
-			this.sendSocketNotification("STANDINGS_RESULT-" + this.config.sports[i].league, {instanceId: this.identifier, url: this.config.url + sport} );
+			var notification = "STANDINGS_RESULT-" + this.config.sports[i].league;
+			Log.log("[MMM-MyStandings] : getData(clearAll) sending -> " + notification + ', instanceId: ' + this.instanceId + ', identifier: ' + this.identifier);
+			this.sendSocketNotification(notification, {instanceId: this.identifier, url: this.config.url + sport} );
 			//this.sendSocketNotification("STANDINGS_RESULT-" + this.config.sports[i].league, this.config.url + sport);
 		}
 	},
