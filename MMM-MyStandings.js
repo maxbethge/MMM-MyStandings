@@ -196,7 +196,7 @@ Module.register("MMM-MyStandings",{
 	// Start the module.
 	start: function () {
 		// Set some default for groups if not found in user config
-		sendToLog('module start');
+		this.sendToLog('module start');
 		for (var league in this.config.sports) {
 			if (this.config.sports[league].groups === undefined) {
 				for (var leagueDefault in this.defaults.sports) {
@@ -209,11 +209,11 @@ Module.register("MMM-MyStandings",{
 		}
 
 		// Get initial API data
-		sendToLog('initial getData(false) call');
+		this.sendToLog('initial getData(false) call');
 		this.getData(false);
 
 		// Schedule the API data update.
-		sendToLog('scheduleUpdate() call');
+		this.sendToLog('scheduleUpdate() call');
 		this.scheduleUpdate();
 
 		// Schedule the first UI load
@@ -227,7 +227,7 @@ Module.register("MMM-MyStandings",{
 		setInterval(function() {
 			self.rotateStandings();
 		}, this.config.rotateInterval);
-		sendToLog('module start completed');
+		this.sendToLog('module start completed');
 	},	
 
 	// Define required styles.
@@ -252,7 +252,7 @@ Module.register("MMM-MyStandings",{
 	},
 
 	scheduleUpdate: function(delay) {
-		sendToLog('scheduleUpdate(delay) --> delay: ' + delay);
+		this.sendToLog('scheduleUpdate(delay) --> delay: ' + delay);
 		var nextLoad = this.config.updateInterval;
 		if (typeof delay !== "undefined" && delay >= 0) {
 			nextLoad = delay;
@@ -266,7 +266,7 @@ Module.register("MMM-MyStandings",{
 
 	getData: function (clearAll) {
 		// When we want to refresh data from the API call
-		sendToLog('getData(' + clearAll + ')');
+		this.sendToLog('getData(' + clearAll + ')');
 		if (clearAll === true) {
 			this.standingsInfo = [];
 			this.standingsSportInfo = [];
@@ -304,23 +304,23 @@ Module.register("MMM-MyStandings",{
 					break;
 			}
 			var notification = "MMM-MYSTANDINGS-UPDATE:" + this.config.sports[i].league;
-			sendToLog('getData(' + clearAll + ') sending -> ' + notification);
+			this.sendToLog('getData(' + clearAll + ') sending -> ' + notification);
 			this.sendSocketNotification(notification, {instanceId: this.identifier, url: this.config.url + sport} );
 		}
 	},
 
 	socketNotificationReceived: function(notification, payload) {
-		//sendToLog('ms socketNotificationReceived: ' + notification + ', data: ' + payload.data);
+		//this.('ms socketNotificationReceived: ' + notification + ', data: ' + payload.data);
 		if (notification.startsWith("STANDINGS_RESULT") && payload.instanceId == this.identifier) {
-			sendToLog('ms socketNotificationReceived: ' + notification + ', data: ' + payload.data);
+			this.sendToLog('ms socketNotificationReceived: ' + notification + ', data: ' + payload.data);
 			if(payload.data != null) {
-				sendToLog('ms socketNotificationReceived: processing data');
+				this.sendToLog('ms socketNotificationReceived: processing data');
 				var league = notification.split(":")[1];
 				this.standingsInfo.push(this.cleanupData(payload.data.children, league));
 				this.standingsSportInfo.push(league);
 			}
 			else {
-				sendToLog('ms socketNotificationReceived: empty data');
+				this.sendToLog('ms socketNotificationReceived: empty data');
 			}
 
 			this.scheduleUpdate();
@@ -330,13 +330,13 @@ Module.register("MMM-MyStandings",{
 	// This function helps rotate through different configured sports and rotate through divisions if that is configured
 	rotateStandings: function() {
 		// If we do not have any data, do not try to load the UI	
-		sendToLog('standingsInfo.length: ' + this.standingsInfo.length);	
+		this.sendToLog('standingsInfo.length: ' + this.standingsInfo.length);	
 		if (this.standingsInfo === undefined || this.standingsInfo === null || this.standingsInfo.length === 0) {
 			return;
 		}
 
 		// If we reached the end of the array, start over at 0
-		sendToLog('ctRotate: ' + this.ctRotate);
+		this.sendToLog('ctRotate: ' + this.ctRotate);
 		if (this.ctRotate >= this.standingsInfo.length) {
 			this.ctRotate = 0;
 		}
@@ -347,7 +347,7 @@ Module.register("MMM-MyStandings",{
 		if (this.config.showByDivision) {
 			// If we only have 1 sport and 1 division, load it once and then do not try re loading again.
 			if (this.isLoaded === true && this.standingsInfo.length === 1 && this.ctDivision === 0 && this.hasMoreDivisions === false) {
-				sendToLog('showByDivision - not rotating');
+				this.sendToLog('showByDivision - not rotating');
 				return;
 			}
 
@@ -379,7 +379,7 @@ Module.register("MMM-MyStandings",{
 				}
 			}
 
-			sendToLog('updating Dom');
+			this.sendToLog('updating Dom');
 			this.updateDom(this.config.fadeSpeed);
 			this.isLoaded = true;
 			this.ctDivision = this.ctDivision + 1;
@@ -392,11 +392,11 @@ Module.register("MMM-MyStandings",{
 		} else {
 			// If we only have 1 sport, load it once and then do not try re loading again.
 			if (this.isLoaded === true && this.standingsInfo.length === 1) {
-				sendToLog('not rotating');
+				this.sendToLog('not rotating');
 				return;
 			}
 
-			sendToLog('updating Dom');
+			this.sendToLog('updating Dom');
 			this.updateDom(this.config.fadeSpeed);
 			this.isLoaded = true;
 			this.ctRotate = this.ctRotate + 1;
@@ -410,7 +410,7 @@ Module.register("MMM-MyStandings",{
 		var imageType = ".svg";
 		var isSoccer = this.isSoccerLeague(sport);
 
-		sendToLog('cleanupData: ' + sport);
+		this.sendToLog('cleanupData: ' + sport);
 		if (sport === 'NCAAF' || sport === 'NCAAM') {
 			imageType = ".png";
 		}
