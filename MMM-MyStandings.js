@@ -300,7 +300,7 @@ Module.register("MMM-MyStandings",{
 					break;
 			}
 			
-			this.sendSocketNotification("STANDINGS_RESULT-" + this.config.sports[i].league, {instanceId: self.identifier, url: this.config.url + sport} );
+			this.sendSocketNotification("STANDINGS_RESULT-" + this.config.sports[i].league, {instanceId: this.identifier, url: this.config.url + sport} );
 			//this.sendSocketNotification("STANDINGS_RESULT-" + this.config.sports[i].league, this.config.url + sport);
 		}
 	},
