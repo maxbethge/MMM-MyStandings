@@ -18,7 +18,7 @@ module.exports = NodeHelper.create({
 		request({ url: url, method: 'GET' }, function (error, response, body) {
 			if (!error && response.statusCode == 200) {
 				var result = JSON.parse(body);
-				Log.log("[MMM-MyStandings] : data -> " + result);
+				Log.log("[MMM-MyStandings] : data -> " + body);
 				self.sendSocketNotification(notification, result);
 			} else {
 				Log.log("[MMM-MyStandings] : Could not load data -> " + error);
@@ -28,7 +28,7 @@ module.exports = NodeHelper.create({
 
 	//Subclass socketNotificationReceived received.
 	socketNotificationReceived: function(notification, payload) {
-		Log.log('[MMM-MyStandings] socketNotificationReceived: ' + notification);
+		Log.log('[MMM-MyStandings] nh socketNotificationReceived: ' + notification);
 		this.getData(notification, payload);
 	}
 });
