@@ -388,7 +388,7 @@ Module.register("MMM-MyStandings",{
 				return;
 			}
 
-			Log.log("[MMM-MyStandings] updating Dom");
+			Log.log("[MMM-MyStandings] updating Dom, identifier: " + this.identifier);
 			this.updateDom(this.config.fadeSpeed);
 			this.isLoaded = true;
 			this.ctRotate = this.ctRotate + 1;
