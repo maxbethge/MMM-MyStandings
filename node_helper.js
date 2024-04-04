@@ -14,12 +14,12 @@ module.exports = NodeHelper.create({
 
 	getData: function (notification, url) {
 		var self = this;
-		Log.log('[MMM-MyStandings] notification: ' + notification + ', url: ' + url);
+		Log.log('[MMM-MyStandings] notification: ' + notification + ', instanceId: ' + this.instanceId + ', identifier: ' + this.identifier + ', url: ' + url);
 		request({ url: url, method: 'GET' }, function (error, response, body) {
 			if (!error && response.statusCode == 200) {
 				var result = JSON.parse(body);
-				Log.log("[MMM-MyStandings] : request succeeded, sending -> " + notification);
-				self.sendSocketNotification(notification, {instanceId: self.identifier, result: result});
+				Log.log("[MMM-MyStandings] : request succeeded, sending -> " + notification + ', identifier: ' + this.identifier);
+				self.sendSocketNotification(notification, {instanceId: this.identifier, result: result});
 			} else {
 				Log.log("[MMM-MyStandings] : Could not load data -> " + error);
 			}
