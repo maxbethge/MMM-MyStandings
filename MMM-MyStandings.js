@@ -196,6 +196,7 @@ Module.register("MMM-MyStandings",{
 	// Start the module.
 	start: function () {
 		// Set some default for groups if not found in user config
+		Log.log("[MMM-MyStandings] module start");
 		for (var league in this.config.sports) {
 			if (this.config.sports[league].groups === undefined) {
 				for (var leagueDefault in this.defaults.sports) {
@@ -248,7 +249,6 @@ Module.register("MMM-MyStandings",{
 	},
 
 	scheduleUpdate: function(delay) {
-		Log.log('[MMM-MyStandings] scheduleUpdate - delay:' + delay);
 		var nextLoad = this.config.updateInterval;
 		if (typeof delay !== "undefined" && delay >= 0) {
 			nextLoad = delay;
@@ -262,17 +262,16 @@ Module.register("MMM-MyStandings",{
 
 	getData: function (clearAll) {
 		// When we want to refresh data from the API call
+		Log.log("[MMM-MyStandings] getData(clearAll): " + clearAll);
 		if (clearAll === true) {
 			this.standingsInfo = [];
 			this.standingsSportInfo = [];
 			this.isLoaded = false;
-			Log.log('[MMM-MyStandings] clearAll');
 		}
 
 		var sport;
 
 		for (var i = 0; i < this.config.sports.length; i++) {
-			Log.log('[MMM-MyStandings] getData - ' + this.config.sports[i].league);
 			switch (this.config.sports[i].league) {
 				case "MLB":
 					sport = "baseball/mlb/standings?level=3&sort=gamesbehind:asc,winpercent:desc";
@@ -306,8 +305,8 @@ Module.register("MMM-MyStandings",{
 	},
 
 	socketNotificationReceived: function(notification, payload) {
-		if (notification.startsWith("STANDINGS_RESULT")) {
-			Log.log('[MMM-MyStandings] notification received - ' + notification);
+		if (notification.startsWith("STANDINGS_RESULT") && payload.instanceId == this.identifier) {
+			Log.log("[MMM-MyStandings] socketNotificationReceived: " + notification);
 			var league = notification.split("-")[1];
 			this.standingsInfo.push(this.cleanupData(payload.children, league));
 			this.standingsSportInfo.push(league);
@@ -316,14 +315,14 @@ Module.register("MMM-MyStandings",{
 
 	// This function helps rotate through different configured sports and rotate through divisions if that is configured
 	rotateStandings: function() {
-		Log.log('[MMM-MyStandings] rotateStandings - ' + this.standingsInfo);
 		// If we do not have any data, do not try to load the UI
+		Log.log("[MMM-MyStandings] standingsInfo: " + this.standingsInfo + " -> " + this.standingsInfo.length);
 		if (this.standingsInfo === undefined || this.standingsInfo === null || this.standingsInfo.length === 0) {
 			return;
 		}
 
-		Log.log('[MMM-MyStandings] rotateStandings - ' + this.ctRotate);
 		// If we reached the end of the array, start over at 0
+		Log.log("[MMM-MyStandings] ctRotate: " + this.ctRotate);
 		if (this.ctRotate >= this.standingsInfo.length) {
 			this.ctRotate = 0;
 		}
@@ -334,6 +333,7 @@ Module.register("MMM-MyStandings",{
 		if (this.config.showByDivision) {
 			// If we only have 1 sport and 1 division, load it once and then do not try re loading again.
 			if (this.isLoaded === true && this.standingsInfo.length === 1 && this.ctDivision === 0 && this.hasMoreDivisions === false) {
+				Log.log("[MMM-MyStandings] showByDivision - not rotating");
 				return;
 			}
 
@@ -365,6 +365,7 @@ Module.register("MMM-MyStandings",{
 				}
 			}
 
+			Log.log("[MMM-MyStandings] updating Dom");
 			this.updateDom(this.config.fadeSpeed);
 			this.isLoaded = true;
 			this.ctDivision = this.ctDivision + 1;
@@ -375,12 +376,11 @@ Module.register("MMM-MyStandings",{
 				this.ctRotate = this.ctRotate + 1;
 			}
 		} else {
-			Log.log("[MMM-MyStandings] isLoaded -> " + this.isLoaded );
-			Log.log("[MMM-MyStandings] standingsInfo.length -> " + this.standingsInfo.length );
 			// If we only have 1 sport, load it once and then do not try re loading again.
-		//	if (this.isLoaded === true && this.standingsInfo.length === 1) {
-		//		return;
-		//	}
+			if (this.isLoaded === true && this.standingsInfo.length === 1) {
+				Log.log("[MMM-MyStandings] not rotating");
+				return;
+			}
 
 			this.updateDom(this.config.fadeSpeed);
 			this.isLoaded = true;
@@ -395,7 +395,7 @@ Module.register("MMM-MyStandings",{
 		var imageType = ".svg";
 		var isSoccer = this.isSoccerLeague(sport);
 
-		Log.log("[MMM-MyStandings] cleanupData -> " + sport );
+		Log.log("[MMM-MyStandings] cleanupData: " + sport);
 		if (sport === 'NCAAF' || sport === 'NCAAM') {
 			imageType = ".png";
 		}
