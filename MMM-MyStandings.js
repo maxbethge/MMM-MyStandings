@@ -313,9 +313,17 @@ Module.register("MMM-MyStandings",{
 		//sendToLog('ms socketNotificationReceived: ' + notification + ', data: ' + payload.data);
 		if (notification.startsWith("STANDINGS_RESULT") && payload.instanceId == this.identifier) {
 			sendToLog('ms socketNotificationReceived: ' + notification + ', data: ' + payload.data);
-			var league = notification.split(":")[1];
-			this.standingsInfo.push(this.cleanupData(payload.data.children, league));
-			this.standingsSportInfo.push(league);
+			if(payload.data != null) {
+				sendToLog('ms socketNotificationReceived: processing data');
+				var league = notification.split(":")[1];
+				this.standingsInfo.push(this.cleanupData(payload.data.children, league));
+				this.standingsSportInfo.push(league);
+			}
+			else {
+				sendToLog('ms socketNotificationReceived: empty data');
+			}
+
+			this.scheduleUpdate();
 		}
 	},
 
