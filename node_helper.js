@@ -18,8 +18,8 @@ module.exports = NodeHelper.create({
 		request({ url: url, method: 'GET' }, function (error, response, body) {
 			if (!error && response.statusCode == 200) {
 				var result = JSON.parse(body);
-				Log.log("[MMM-MyStandings] : request succeeded");
-				self.sendSocketNotification(notification, result);
+				Log.log("[MMM-MyStandings] : request succeeded, sending -> " + notification);
+				self.sendSocketNotification(notification, {instanceId: self.identifier, result: result});
 			} else {
 				Log.log("[MMM-MyStandings] : Could not load data -> " + error);
 			}

@@ -310,7 +310,7 @@ Module.register("MMM-MyStandings",{
 		if (notification.startsWith("STANDINGS_RESULT") && payload.instanceId == this.identifier) {
 			Log.log("[MMM-MyStandings] socketNotificationReceived: " + notification);
 			var league = notification.split("-")[1];
-			this.standingsInfo.push(this.cleanupData(payload.children, league));
+			this.standingsInfo.push(this.cleanupData(payload.result.children, league));
 			this.standingsSportInfo.push(league);
 		}
 	},
