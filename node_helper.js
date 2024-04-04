@@ -28,7 +28,7 @@ module.exports = NodeHelper.create({
 
 	//Subclass socketNotificationReceived received.
 	socketNotificationReceived: function(notification, payload) {
-		Log.log('[MMM-MyStandings] nh socketNotificationReceived: ' + notification + ', instanceId: ' + payload.instanceId);
+		Log.log('[MMM-MyStandings] nh socketNotificationReceived: ' + notification + ', instanceId: ' + payload.instanceId + ', identifier: ' + payload.identifier);
 		this.getData(notification, payload.url);
 	}
 });
