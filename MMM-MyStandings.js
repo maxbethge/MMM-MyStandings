@@ -305,7 +305,7 @@ Module.register("MMM-MyStandings",{
 			}
 			var notification = "MMM-MYSTANDINGS-UPDATE:" + this.config.sports[i].league;
 			//var notification = "MMM-MYSTANDINGS-UPDATE-STANDINGS";
-			Log.log("[MMM-MyStandings] : getData(clearAll) sending -> " + notification + ', instanceId: ' + this.identifier);
+			Log.log("[MMM-MyStandings] getData(clearAll) sending -> " + notification + ', instanceId: ' + this.identifier);
 			this.sendSocketNotification(notification, {instanceId: this.identifier, url: this.config.url + sport} );
 			//this.sendSocketNotification("STANDINGS_RESULT-" + this.config.sports[i].league, this.config.url + sport);
 		}
