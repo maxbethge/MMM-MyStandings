@@ -376,9 +376,9 @@ Module.register("MMM-MyStandings",{
 			console.log("MMM-MyStandings : isLoaded -> " + this.isLoaded );
 			console.log("MMM-MyStandings : standingsInfo.length -> " + this.standingsInfo.length );
 			// If we only have 1 sport, load it once and then do not try re loading again.
-			if (this.isLoaded === true && this.standingsInfo.length === 1) {
-				return;
-			}
+		//	if (this.isLoaded === true && this.standingsInfo.length === 1) {
+		//		return;
+		//	}
 
 			this.updateDom(this.config.fadeSpeed);
 			this.isLoaded = true;
