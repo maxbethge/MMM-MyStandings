@@ -22,7 +22,7 @@ module.exports = NodeHelper.create({
 				Log.log('['+ this.name + '] ' + payload.instanceId + ' - callUrl request succeeded, sending -> ' + newNotification);
 				self.sendSocketNotification(newNotification, {instanceId: payload.instanceId, data: result});
 			} else {
-				Log.error('['+ this.name + '] ' + payload.instanceId + ' - Could not load data, sending -> ' + newNotification + ', error: ' + error);
+				Log.error('['+ this.name + '] ' + payload.instanceId + ' - could not load data, sending -> ' + newNotification + ', error: ' + error);
 				self.sendSocketNotification(newNotification, {instanceId: payload.instanceId, data: null});
 			}
 		});
