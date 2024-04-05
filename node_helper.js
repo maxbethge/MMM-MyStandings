@@ -4,7 +4,7 @@
  */
 const NodeHelper = require("node_helper");
 const request = require('request');
-const Log = require('../../js/logger.js')
+const Log = require('../../js/logger.js');
 
 module.exports = NodeHelper.create({
 
@@ -12,17 +12,17 @@ module.exports = NodeHelper.create({
 		Log.log("Starting node_helper for module [" + this.name + "]");
 	},
 
-	getData: function (notification, payload) {
+	callUrl: function (notification, payload) {
 		var self = this;
-		Log.log('[MMM-MyStandings] ' + payload.instanceId + ' - getData -->  ' + notification);
+		Log.log('['+ this.name + '] ' + payload.instanceId + ' - callUrl -->  ' + notification);
 		request({ url: payload.url, method: 'GET' }, function (error, response, body) {
 			if (!error && response.statusCode == 200) {
 				var result = JSON.parse(body);
 				var newNotification = "STANDINGS_RESULT:" + notification.split(":")[1];
-				Log.log('[MMM-MyStandings] ' + payload.instanceId + ' - getData url request succeeded, sending -> ' + newNotification);
+				Log.log('['+ this.name + '] ' + payload.instanceId + ' - callUrl request succeeded, sending -> ' + newNotification);
 				self.sendSocketNotification(newNotification, {instanceId: payload.instanceId, data: result});
 			} else {
-				Log.error('[MMM-MyStandings] ' + payload.instanceId + ' - Could not load data, sending -> ' + newNotification + ', error: ' + error);
+				Log.error('['+ this.name + '] ' + payload.instanceId + ' - Could not load data, sending -> ' + newNotification + ', error: ' + error);
 				self.sendSocketNotification(newNotification, {instanceId: payload.instanceId, data: null});
 			}
 		});
@@ -31,8 +31,8 @@ module.exports = NodeHelper.create({
 	//Subclass socketNotificationReceived received.
 	socketNotificationReceived: function(notification, payload) {
 		if (notification.startsWith("MMM-MYSTANDINGS-UPDATE")){
-			Log.log('[MMM-MyStandings] ' + payload.instanceId + ' - nh socketNotificationReceived: ' + notification);
-			this.getData(notification, {instanceId: payload.instanceId, url: payload.url});
+			Log.log('['+ this.name + '] ' + payload.instanceId + ' - nh socketNotificationReceived: ' + notification);
+			this.callUrl(notification, {instanceId: payload.instanceId, url: payload.url});
 		}
 	}
 });

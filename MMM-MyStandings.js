@@ -252,12 +252,13 @@ Module.register("MMM-MyStandings",{
 	},
 
 	scheduleUpdate: function(delay) {
-		this.sendToLog('scheduleUpdate(delay) --> delay: ' + delay);
+		this.sendToLog('scheduleUpdate(' + delay + ')');
 		var nextLoad = this.config.updateInterval;
 		if (typeof delay !== "undefined" && delay >= 0) {
 			nextLoad = delay;
 		}
 
+		this.sendToLog('scheduleUpdate - setInterval --> nextLoad: ' + nextLoad);
 		var self = this;
 		setInterval(function() {
 			self.getData(true);
@@ -323,7 +324,7 @@ Module.register("MMM-MyStandings",{
 				this.sendToLog('ms socketNotificationReceived: empty data');
 			}
 
-			this.scheduleUpdate();
+			//this.scheduleUpdate();
 		}
 	},
 
@@ -771,6 +772,6 @@ Module.register("MMM-MyStandings",{
 	},
 
 	sendToLog: function(message) {
-		Log.log('[MMM-MyStandings] ' + this.identifier + ' - ' + message);
+		Log.log('['+ this.name + '] ' + this.identifier + ' - ' + message);
 	}
 });
