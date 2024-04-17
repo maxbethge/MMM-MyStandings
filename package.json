@@ -16,6 +16,6 @@
   "author": "vincep5,maxbethge",
   "license": "MIT",
   "dependencies": {
-    "request" : "^2.88.2"
+    "axios": "^0.27.2"
   }
 }
