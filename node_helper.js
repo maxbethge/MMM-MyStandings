@@ -14,8 +14,9 @@ module.exports = NodeHelper.create({
 	},
 
 	callUrl: function (notification, payload, callback) {
-		var self = this;
-		Log.log('['+ this.name + '] ' + payload.instanceId + ' - callUrl -->  ' + notification);
+		//var self = this;
+		//Log.log('['+ this.name + '] ' + payload.instanceId + ' - callUrl -->  ' + notification);
+		Log.log('[MMM-MyStandings] ' + payload.instanceId + ' - callUrl -->  ' + notification);
 		var newNotification = "STANDINGS_RESULT:" + notification.split(":")[1];
 		
 		//request({ url: payload.url, method: 'GET' }, function (error, response, body) {
@@ -33,12 +34,12 @@ module.exports = NodeHelper.create({
 		axios.get(payload.url)
 		.then( function(response) {
 				//Log.log('['+ this.name + '] ' + payload.instanceId + ' - get request succeeded, sending -> ' + newNotification);
-				Log.log('['+ this.name + '] ' + payload.instanceId + ' - get request succeeded');
+				Log.log('[MMM-MyStandings] ' + payload.instanceId + ' - get request succeeded');
 				//self.sendSocketNotification(newNotification, {instanceId: payload.instanceId, data: response.data});
 				callback({notification: newNotification, data: response.data});
 		})
 		.catch( function(r_err) {
-			console.log( '['+ this.name + '] ' + payload.instanceId + " -  ** ERROR ** - " + r_err );
+			console.log( '[MMM-MyStandings] ' + payload.instanceId + " -  ** ERROR ** - " + r_err );
 			console.log( "[MMM-MyScoreboard] " + payload.url );  
 			//self.sendSocketNotification(newNotification, {instanceId: payload.instanceId, data: null});
 			callback({notification: newNotification, data: null});   
