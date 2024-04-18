@@ -52,7 +52,7 @@ module.exports = NodeHelper.create({
 		if (notification.startsWith("MMM-MYSTANDINGS-UPDATE")){
 			Log.log('['+ this.name + '] ' + payload.instanceId + ' - nh socketNotificationReceived: ' + notification);
 			this.callUrl(notification, {instanceId: payload.instanceId, url: payload.url},	function(response) {
-				self.sendSocketNotification(response.notification, {instanceId: payload.instanceId, data: response.data});
+				this.sendSocketNotification(response.notification, {instanceId: payload.instanceId, data: response.data});
 			  });
 		}
 	}
