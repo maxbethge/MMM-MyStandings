@@ -230,6 +230,11 @@ Module.register("MMM-MyStandings",{
 		this.sendToLog('module start completed');
 	},	
 
+	// Define required scripts.
+	getScripts: function() {
+		return ["moment.js"];
+	},
+
 	// Define required styles.
 	getStyles: function () {
 		return ["MMM-MyStandings.css"];
