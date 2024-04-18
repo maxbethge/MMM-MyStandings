@@ -38,7 +38,7 @@ module.exports = NodeHelper.create({
 				callback({notification: newNotification, data: response.data});
 		})
 		.catch( function(r_err) {
-			console.log( '['+ this.name + '] ' + payload.instanceId + " - " + moment().format("D-MMM-YY HH:mm") + " ** ERROR ** - " + r_err );
+			console.log( '['+ this.name + '] ' + payload.instanceId + " -  ** ERROR ** - " + r_err );
 			console.log( "[MMM-MyScoreboard] " + payload.url );  
 			//self.sendSocketNotification(newNotification, {instanceId: payload.instanceId, data: null});
 			callback({notification: newNotification, data: null});   
