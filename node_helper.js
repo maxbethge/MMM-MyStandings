@@ -13,7 +13,7 @@ module.exports = NodeHelper.create({
 		Log.log("Starting node_helper for module [" + this.name + "]");
 	},
 
-	callUrl: function (notification, payload) {
+	callUrl: function (notification, payload, callback) {
 		var self = this;
 		Log.log('['+ this.name + '] ' + payload.instanceId + ' - callUrl -->  ' + notification);
 		var newNotification = "STANDINGS_RESULT:" + notification.split(":")[1];
@@ -32,13 +32,16 @@ module.exports = NodeHelper.create({
 
 		axios.get(payload.url)
 		.then( function(response) {
-				Log.log('['+ this.name + '] ' + payload.instanceId + ' - get request succeeded, sending -> ' + newNotification);
-				self.sendSocketNotification(newNotification, {instanceId: payload.instanceId, data: response.data});
+				//Log.log('['+ this.name + '] ' + payload.instanceId + ' - get request succeeded, sending -> ' + newNotification);
+				Log.log('['+ this.name + '] ' + payload.instanceId + ' - get request succeeded');
+				//self.sendSocketNotification(newNotification, {instanceId: payload.instanceId, data: response.data});
+				callback({notification: newNotification, data: response.data});
 		})
 		.catch( function(r_err) {
 			console.log( '['+ this.name + '] ' + payload.instanceId + " - " + moment().format("D-MMM-YY HH:mm") + " ** ERROR ** - " + r_err );
-			console.log( "[MMM-MyScoreboard] " + url );  
-			self.sendSocketNotification(newNotification, {instanceId: payload.instanceId, data: null});      
+			console.log( "[MMM-MyScoreboard] " + payload.url );  
+			//self.sendSocketNotification(newNotification, {instanceId: payload.instanceId, data: null});
+			callback({notification: newNotification, data: null});   
 		});
 
 		},
@@ -47,7 +50,9 @@ module.exports = NodeHelper.create({
 	socketNotificationReceived: function(notification, payload) {
 		if (notification.startsWith("MMM-MYSTANDINGS-UPDATE")){
 			Log.log('['+ this.name + '] ' + payload.instanceId + ' - nh socketNotificationReceived: ' + notification);
-			this.callUrl(notification, {instanceId: payload.instanceId, url: payload.url});
+			this.callUrl(notification, {instanceId: payload.instanceId, url: payload.url},	function(response) {
+				self.sendSocketNotification(response.notification, {instanceId: payload.instanceId, data: response.data});
+			  });
 		}
 	}
 });
