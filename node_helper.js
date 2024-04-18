@@ -30,7 +30,7 @@ module.exports = NodeHelper.create({
 		//	}
 		//});
 
-		axios.get(url)
+		axios.get(payload.url)
 		.then( function(response) {
 				Log.log('['+ this.name + '] ' + payload.instanceId + ' - get request succeeded, sending -> ' + newNotification);
 				self.sendSocketNotification(newNotification, {instanceId: payload.instanceId, data: response.data});
