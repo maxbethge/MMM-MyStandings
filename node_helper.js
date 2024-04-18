@@ -50,9 +50,10 @@ module.exports = NodeHelper.create({
 	//Subclass socketNotificationReceived received.
 	socketNotificationReceived: function(notification, payload) {
 		if (notification.startsWith("MMM-MYSTANDINGS-UPDATE")){
+			var self = this;
 			Log.log('['+ this.name + '] ' + payload.instanceId + ' - nh socketNotificationReceived: ' + notification);
 			this.callUrl(notification, {instanceId: payload.instanceId, url: payload.url},	function(response) {
-				this.sendSocketNotification(response.notification, {instanceId: payload.instanceId, data: response.data});
+				self.sendSocketNotification(response.notification, {instanceId: payload.instanceId, data: response.data});
 			  });
 		}
 	}
