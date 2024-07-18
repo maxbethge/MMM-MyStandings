@@ -326,6 +326,9 @@ Module.register("MMM-MyStandings",{
 
 			//this.scheduleUpdate();
 		}
+		else {
+			this.sendToLog('ms socketNotificationReceived: ' + notification + ' - no processing done');
+		}
 	},
 
 	// This function helps rotate through different configured sports and rotate through divisions if that is configured

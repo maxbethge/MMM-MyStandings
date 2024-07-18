@@ -15,10 +15,11 @@ module.exports = NodeHelper.create({
 	callUrl: function (notification, payload) {
 		var self = this;
 		Log.log('['+ this.name + '] ' + payload.instanceId + ' - callUrl -->  ' + notification);
+		var newNotification = "N/A";
 		request({ url: payload.url, method: 'GET' }, function (error, response, body) {
 			if (!error && response.statusCode == 200) {
 				var result = JSON.parse(body);
-				var newNotification = "STANDINGS_RESULT:" + notification.split(":")[1];
+				newNotification = "STANDINGS_RESULT:" + notification.split(":")[1];
 				Log.log('['+ this.name + '] ' + payload.instanceId + ' - callUrl request succeeded, sending -> ' + newNotification);
 				self.sendSocketNotification(newNotification, {instanceId: payload.instanceId, data: result});
 			} else {
@@ -33,6 +34,9 @@ module.exports = NodeHelper.create({
 		if (notification.startsWith("MMM-MYSTANDINGS-UPDATE")){
 			Log.log('['+ this.name + '] ' + payload.instanceId + ' - nh socketNotificationReceived: ' + notification);
 			this.callUrl(notification, {instanceId: payload.instanceId, url: payload.url});
+		}
+		else {
+			Log.log('['+ this.name + '] ' + payload.instanceId + ' - nh socketNotificationReceived: ' + notification + ' - no processing done');
 		}
 	}
 });
